@@ -12,27 +12,94 @@ struct Node {
     left: Tree,
     right: Tree,
 }
+// cree 
+
+pub struct Node{
+    value:i32,
+    left: Option<Box<Node>>,
+    right: Option<Box<Node>>,
+
+}
 
 impl Tree {
     /// Returns an empty tree
     pub fn new() -> Self {
-        panic!("Not implemented")
+        Tree(None)
     }
 
     /// Returns a tree containing a single value
     fn leaf(value: i32) -> Self {
-        panic!("Not implemented")
+        Tree(Some(Box::new(Node {
+             value,
+                left: Tree::new(),
+                right: Tree::new(), 
+        })))
     }
 
     /// Inserts `value` into the tree.
     /// Returns `false` iff the `value` was already contained in the tree.
     pub fn insert(&mut self, value: i32) -> bool {
-        panic!("Not implemented")
+        if self.value == value {
+            true
+        } else{
+            let left_contains = match  
+                &self.left {
+                    Some(left_node)=>
+                left_node.contains(value),
+                None=>False,
+                };
+            let right_contains= match
+                &self.right{
+                    Some(right_node)=>
+                right_node.contains(value),
+                None=>False,
+                };
+                left_contains ||
+            right_contains
+            };
+        }
+        
     }
 
-    /// Returns true if and only if `value` belongs to the tree.
+    /// Returns true if and only if `value` belongs to the tree. 
+    /// 
+    /// insertion de valeur 
     pub fn contains(&self, value: i32) -> bool {
-        panic!("Not implemented")
+        if self.value == value{
+            false // la valeur existe deja 
+        } else if value < self.value{
+            match &mut self.left {
+                Some(left)=>
+            left.contain(value),
+                         None => {
+                            // creation d un nouveau noeud a gauche 
+                            self.left=
+            Some(Box::new(Node{
+                value,
+                left:None,
+                right: None,
+
+            }));
+            true 
+                         }
+            }
+        }else {
+            match &mut self.right {
+                Some(right) => 
+            right.contain(value),
+            None=> {
+                // creation d un nouveau noeud a droite 
+                self.right= Some(Box::new(Node{
+                    value,
+                    left:None,
+                    right:None,
+                }));
+                true
+
+            }
+            }
+        }
+        
     }
 
     /// Deletes `value` from the tree.
